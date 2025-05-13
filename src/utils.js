@@ -24,9 +24,10 @@ function mapArch(arch) {
 
 function getDownloadObject(version) {
   const platform = os.platform();
-  const filename = `foundry_zksync_${normalizeVersionName(version)}_${platform}_${mapArch(os.arch())}`;
+  const normalizedVersion = normalizeVersionName(version);
+  const filename = `${normalizedVersion.replace("-", "_")}_${platform}_${mapArch(os.arch())}`;
   const extension = platform === "win32" ? "zip" : "tar.gz";
-  const url = `https://github.com/matter-labs/foundry-zksync/releases/download/${version}/${filename}.${extension}`;
+  const url = `https://github.com/matter-labs/foundry-zksync/releases/download/${normalizedVersion}/${filename}.${extension}`;
 
   return {
     url,
