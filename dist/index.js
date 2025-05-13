@@ -70496,7 +70496,7 @@ function mapArch(arch) {
 function getDownloadObject(version) {
   const platform = os.platform();
   const normalizedVersion = normalizeVersionName(version);
-  const filename = `${normalizedVersion.replace("-", "_")}_${platform}_${mapArch(os.arch())}`;
+  const filename = `${normalizedVersion.replaceAll("-", "_")}_${platform}_${mapArch(os.arch())}`;
   const extension = platform === "win32" ? "zip" : "tar.gz";
   const url = `https://github.com/matter-labs/foundry-zksync/releases/download/${normalizedVersion}/${filename}.${extension}`;
 
