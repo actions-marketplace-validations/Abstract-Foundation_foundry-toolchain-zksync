@@ -70282,8 +70282,8 @@ const { State } = __nccwpck_require__(9992);
 // Define constants for cache paths and prefix
 const HOME = os.homedir();
 const PLATFORM = os.platform();
-const CACHE_PATHS = [path.join(HOME, ".foundry/cache/rpc")];
-const CACHE_PREFIX = `${PLATFORM}-foundry-chain-fork-`;
+const CACHE_PATHS = [path.join(HOME, ".foundry-zksync/cache/rpc")];
+const CACHE_PREFIX = `${PLATFORM}-foundry-zksync-chain-fork-`;
 
 /**
  * Constructs the primary key for the cache using a custom key input.
@@ -70414,9 +70414,23 @@ async function main() {
     // Get version input
     const version = core.getInput("version");
 
+    if (version === "stable") {
+      const response = await fetch(
+        "https://api.github.com/repos/matter-labs/foundry-zksync/releases",
+        {
+          headers: {
+            Accept: "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        }
+      );
+      const data = await response.json();
+      version = data[0].tag_name;
+    }
+
     // Download the archive containing the binaries
     const download = getDownloadObject(version);
-    core.info(`Downloading Foundry '${version}' from: ${download.url}`);
+    core.info(`Downloading Foundry-zksync '${version}' from: ${download.url}`);
     const pathToArchive = await toolCache.downloadTool(download.url);
 
     // Extract the archive onto host runner
@@ -70458,7 +70472,16 @@ if (require.main === require.cache[eval('__filename')]) {
 const os = __nccwpck_require__(857);
 
 function normalizeVersionName(version) {
-  return version.replace(/^nightly-[0-9a-f]{40}$/, "nightly");
+  const normalized = version.replace(/^nightly-[0-9a-f]{40}$/, "nightly");
+  
+  // Check if the normalized version is a semver and format it accordingly
+  if (/^v?\d+\.\d+\.\d+$/.test(normalized)) {
+    // If it's missing the 'v' prefix, add it
+    const withV = normalized.startsWith("v") ? normalized : `v${normalized}`;
+    // Prepend "foundry-zksync-" to the tag
+    return `foundry-zksync-${withV}`;
+  }
+  return normalized;
 }
 
 function mapArch(arch) {
@@ -70472,9 +70495,9 @@ function mapArch(arch) {
 
 function getDownloadObject(version) {
   const platform = os.platform();
-  const filename = `foundry_${normalizeVersionName(version)}_${platform}_${mapArch(os.arch())}`;
+  const filename = `foundry_zksync_${normalizeVersionName(version)}_${platform}_${mapArch(os.arch())}`;
   const extension = platform === "win32" ? "zip" : "tar.gz";
-  const url = `https://github.com/foundry-rs/foundry/releases/download/${version}/${filename}.${extension}`;
+  const url = `https://github.com/matter-labs/foundry-zksync/releases/download/${version}/${filename}.${extension}`;
 
   return {
     url,

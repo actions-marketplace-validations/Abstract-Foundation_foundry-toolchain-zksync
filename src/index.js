@@ -10,9 +10,23 @@ async function main() {
     // Get version input
     const version = core.getInput("version");
 
+    if (version === "stable") {
+      const response = await fetch(
+        "https://api.github.com/repos/matter-labs/foundry-zksync/releases",
+        {
+          headers: {
+            Accept: "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+          },
+        }
+      );
+      const data = await response.json();
+      version = data[0].tag_name;
+    }
+
     // Download the archive containing the binaries
     const download = getDownloadObject(version);
-    core.info(`Downloading Foundry '${version}' from: ${download.url}`);
+    core.info(`Downloading Foundry-zksync '${version}' from: ${download.url}`);
     const pathToArchive = await toolCache.downloadTool(download.url);
 
     // Extract the archive onto host runner

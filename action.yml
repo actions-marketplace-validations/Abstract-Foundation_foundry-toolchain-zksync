@@ -1,6 +1,6 @@
-name: "foundry-toolchain"
-description: "Install Foundry"
-author: "Foundry"
+name: "foundry-toolchain-zksync"
+description: "Install Foundry-zksync"
+author: "Abstract"
 branding:
   color: "gray-dark"
   icon: "play-circle"
@@ -31,9 +31,9 @@ inputs:
   version:
     default: "stable"
     description: |
-      Foundry version.
+      Foundry-zksync version.
 
-      This version number has to match a released version of Foundry.
+      This version number has to match a released version of Foundry-zksync.
       The default value is `stable`, which will pull the latest stable build.
     required: false
 

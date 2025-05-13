@@ -1,7 +1,7 @@
-## `foundry-toolchain` Action
+## `foundry-zksync-toolchain` Action
 
-This GitHub Action installs [Foundry](https://github.com/foundry-rs/foundry), the blazing fast, portable and modular
-toolkit for Ethereum application development.
+This GitHub Action installs [Foundry-zksync](https://github.com/matter-labs/foundry-zksync), the blazing fast, portable and modular
+fork of Foundry toolkit for ZKsync application development.
 
 ### Example workflow
 
@@ -20,7 +20,7 @@ jobs:
           submodules: recursive
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
+        uses: abstract-foundation/foundry-toolchain@v1
 
       - name: Run tests
         run: forge test -vvv
@@ -55,7 +55,7 @@ the `cache` input to `false`, like this:
 
 ```yml
 - name: Install Foundry
-  uses: foundry-rs/foundry-toolchain@v1
+  uses: abstract-foundation/foundry-toolchain@v1
   with:
     cache: false
 ```
@@ -72,7 +72,7 @@ applied:
 
 ```yml
 - name: Install Foundry
-  uses: foundry-rs/foundry-toolchain@v1
+  uses: abstract-foundation/foundry-toolchain@v1
   with:
     cache-key: custom-seed-test-${{ github.sha }}
     cache-restore-keys: |-
@@ -80,7 +80,7 @@ applied:
       custom-seed-
 ---
 - name: Install Foundry
-  uses: foundry-rs/foundry-toolchain@v1
+  uses: abstract-foundation/foundry-toolchain@v1
   with:
     cache-key: custom-seed-coverage-${{ github.sha }}
     cache-restore-keys: |-

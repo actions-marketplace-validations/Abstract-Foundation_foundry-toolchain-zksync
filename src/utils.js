@@ -1,7 +1,16 @@
 const os = require("os");
 
 function normalizeVersionName(version) {
-  return version.replace(/^nightly-[0-9a-f]{40}$/, "nightly");
+  const normalized = version.replace(/^nightly-[0-9a-f]{40}$/, "nightly");
+  
+  // Check if the normalized version is a semver and format it accordingly
+  if (/^v?\d+\.\d+\.\d+$/.test(normalized)) {
+    // If it's missing the 'v' prefix, add it
+    const withV = normalized.startsWith("v") ? normalized : `v${normalized}`;
+    // Prepend "foundry-zksync-" to the tag
+    return `foundry-zksync-${withV}`;
+  }
+  return normalized;
 }
 
 function mapArch(arch) {
@@ -15,9 +24,9 @@ function mapArch(arch) {
 
 function getDownloadObject(version) {
   const platform = os.platform();
-  const filename = `foundry_${normalizeVersionName(version)}_${platform}_${mapArch(os.arch())}`;
+  const filename = `foundry_zksync_${normalizeVersionName(version)}_${platform}_${mapArch(os.arch())}`;
   const extension = platform === "win32" ? "zip" : "tar.gz";
-  const url = `https://github.com/foundry-rs/foundry/releases/download/${version}/${filename}.${extension}`;
+  const url = `https://github.com/matter-labs/foundry-zksync/releases/download/${version}/${filename}.${extension}`;
 
   return {
     url,
