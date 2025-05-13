@@ -70412,7 +70412,7 @@ const { getDownloadObject } = __nccwpck_require__(5804);
 async function main() {
   try {
     // Get version input
-    const version = core.getInput("version");
+    let version = core.getInput("version");
 
     if (version === "stable") {
       const response = await fetch(
